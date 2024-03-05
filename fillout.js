@@ -27,8 +27,12 @@ router.get('/:formId/filteredResponses', async (req, res, next) => {
   if (filters === undefined) {
     res.send(response.data);
   } else {
-    const filteredData = applyFilters(response.data, JSON.parse(filters));
-    res.send(filteredData);
+    try {
+      const filteredData = applyFilters(response.data, JSON.parse(filters));
+      res.send(filteredData);
+    } catch (e) {
+      res.status(400).send({ status: 400, message: 'Invalid filters format' });
+    }
   }
 });
 
